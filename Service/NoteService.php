@@ -17,7 +17,7 @@ class NoteService
   public function getAll(): array
   {
     return $this->db->query(
-      "SELECT body FROM notes WHERE user_id = :id",
+      "SELECT id , body  FROM notes WHERE user_id = :id",
       ['id' => $this->currentUserId]
     )->get();
   }
@@ -42,7 +42,7 @@ class NoteService
   }
 
 
-  public function update($id,$body)
+  public function update($id, $body)
   {
 
     $note = $this->db->query(
@@ -51,7 +51,7 @@ class NoteService
     )->findOrFail();
 
 
-    if (empty($note)) {
+    if (!$note) {
       return [
         "error" => [
           "status" => 404,
@@ -60,29 +60,41 @@ class NoteService
       ];
     }
 
+    if (empty($body)) {
+      return [
+        "error" => [
+          "status" => 403,
+          "message" => "body must not be empty"
+        ]
+      ];
+    }
+
     $result = $this->db->query(
-      "UPDATE notes SET body  = :body WHERE id = :id",
+      "UPDATE notes SET body = :body WHERE id = :id",
       [
-        'id' => 1,
+        'id' => $id,
         'body' => $body
       ]
     );
-
-    return $result;
   }
 
-  public function destroy(int $noteId)
+  public function destroy(int $id)
   {
     $note = $this->db->query(
       "SELECT * FROM notes WHERE id = :id",
-      ['id' => $noteId]
+      ['id' => $id]
     )->findOrFail();
 
     if (!$note) {
-      error(404, "Notes not found");
+      return [
+        "error" => [
+          "status" => 404,
+          "message" => "Notes Not found"
+        ]
+      ];
     }
-
-    $result = $this->db->query("DELETE FROM notes WHERE id = :id", ['id' => $noteId]);
+    
+    $result = $this->db->query("DELETE FROM notes WHERE id = :id", ['id' => $id]);
 
     if ($result) {
       echo "Deleted successfully";
