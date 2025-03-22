@@ -53,6 +53,12 @@ class Router
     // }
 
 
+     // public static function get($uri, $controller)
+    // {
+    //     self::add('GET', $uri, $controller[0], $controllerMethod[1]);
+    // }
+
+
     public static function get($uri, $controller)
     {
         self::add('GET', $uri, $controller);

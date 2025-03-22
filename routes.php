@@ -3,8 +3,6 @@
 use Controller\NoteController;
 use Core\Router;
 
-
-
 Router::get('/api/', 'NoteController@index');
 Router::post('/api/', 'NoteController@store');
 Router::post('/api/', 'NoteController@update');
