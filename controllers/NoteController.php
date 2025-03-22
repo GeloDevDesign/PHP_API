@@ -14,7 +14,7 @@ class NoteController extends NoteService
   public function __construct(protected Database $db,  protected ?int $currentUserId = 1)
   {
 
-    parent::__construct($db, $currentUserId);
+    parent::__construct($this->db, $this->currentUserId);
   }
 
   public  function index()
@@ -33,5 +33,5 @@ class NoteController extends NoteService
     }
   }
 
-  
+
 }

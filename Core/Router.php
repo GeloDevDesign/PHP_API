@@ -1,48 +1,51 @@
 <?php
-
 namespace Core;
 
 class Router
 {
     protected static $routes = [];
 
-    public static function add($method, $uri, $controller)
+    public static function add($method, $uri, string $controllerClass, string $controllerMethod)
     {
+        $controller = App::container()->resolve($controllerClass);
+        $callable = [$controller, $controllerMethod];
+        //OUTPUT:  Controller\NoteController  , index
+
         self::$routes[] = [
             'uri' => $uri,
-            'controller' => $controller,
+            'controller' => $callable,
             'method' => $method
         ];
     }
 
-    public static function get($uri, $controller)
+    // public static function add($method, $uri, $controller)
+    // {
+    //     self::$routes[] = [
+    //         'uri' => $uri,
+    //         'controller' => $controller,
+    //         'method' => $method
+    //     ];
+    // }
+
+
+    public static function get($uri, $controllerClass, $controllerMethod)
     {
-        self::add('GET', $uri, $controller);
+        self::add('GET', $uri, $controllerClass, $controllerMethod);
     }
 
-    public static function post($uri, $controller)
+    public static function post($uri, $controllerClass, $controllerMethod)
     {
-        self::add('POST', $uri, $controller);
+        self::add('POST', $uri, $controllerClass, $controllerMethod);
     }
 
-    public static function patch($uri, $controller)
+    public static function patch($uri, $controllerClass, $controllerMethod)
     {
-        self::add('PATCH', $uri, $controller);
+        self::add('PATCH', $uri, $controllerClass, $controllerMethod);
     }
 
-    public static function put($uri, $controller)
+    public static function delete($uri, $controllerClass, $controllerMethod)
     {
-        self::add('PUT', $uri, $controller);
-    }
-
-    public static function delete($uri, $controller)
-    {
-        self::add('DELETE', $uri, $controller);
-    }
-
-    public  static  function all()
-    {
-        
+        self::add('DELETE', $uri, $controllerClass, $controllerMethod);
     }
 
     public static function route($uri, $method)

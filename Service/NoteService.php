@@ -8,7 +8,7 @@ use Core\Database;
 class NoteService
 {
 
-  public function __construct(protected Database $db,  protected ?int $currentUserId = null)
+  public function __construct(protected Database $db,  protected ?int $currentUserId = 1)
   {
     $this->db = $db;
     $this->currentUserId = $currentUserId ?? (int) ($_SESSION['user']['id'] ?? 1);
