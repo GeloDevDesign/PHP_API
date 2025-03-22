@@ -55,23 +55,27 @@ class NoteController extends NoteService
 
 
   public function update()
-  {
-
+{
     $id = $_GET['id'] ?? 1;
-    $body = $_POST['body'] ?? '';
 
+    $payload = file_get_contents('php://input');
+    parse_str($payload, $data);
+
+    $body = $data['body'] ?? '';
+
+    
     try {
-      $result = $this->updateNotes($id, $body);
+        $result = $this->updateNotes($id, $body);
 
-      if (is_array($result) && isset($result['error'])) {
-        response($result['error']['message'], 400);
-      }
-
-      response($body . " updated successfully", 200);
+        if (is_array($result) && isset($result['error'])) {
+            response($result['error']['message'], 404);
+        }
+        
+        response($body . " updated successfully", 200);
     } catch (\Throwable $th) {
-      response($th, 500);
+        response($th, 500);
     }
-  }
+}
 
   public function destroy()
   {

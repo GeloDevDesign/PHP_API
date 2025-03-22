@@ -17,9 +17,6 @@ function abort($status = 404)
   die();
 }
 
-
-
-
 function response($message, $status = 200,$data = [])
 {
   http_response_code($status);

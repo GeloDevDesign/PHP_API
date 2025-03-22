@@ -1,11 +1,24 @@
 <?php
+
 use Controller\NoteController;
 use Core\Router;
 
-Router::get('/api/', NoteController::class, 'index');
-Router::post('/api/', NoteController::class, 'store');
-Router::patch('/api/', NoteController::class, 'update');
-Router::delete('/api/', NoteController::class, 'destroy');
+
+
+Router::get('/api/', 'NoteController@index');
+Router::post('/api/', 'NoteController@store');
+Router::post('/api/', 'NoteController@update');
+Router::post('/api/', 'NoteController@destroy');
+
+// Router::get('/api/', NoteController::class, 'index');
+
+// Router::get('/api/', [NoteController::class, 'index']);
+// Router::get('/api/', NoteController::class, 'index');
+
+
+// Router::post('/api/', [NoteController::class, 'store']);
+// Router::patch('/api/', [NoteController::class, 'update']);
+// Router::delete('/api/', [NoteController::class, 'destroy']);
 
 
 // $request = App::container()->resolve(NoteController::class);

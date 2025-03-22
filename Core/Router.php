@@ -1,15 +1,20 @@
 <?php
+
 namespace Core;
 
 class Router
 {
     protected static $routes = [];
 
-    public static function add($method, $uri, string $controllerClass, string $controllerMethod)
+    public static function add($method, $uri, string $controllerString)
     {
+       
+        $parts = explode('@', $controllerString);
+        $controllerClass = "Controller\\" .$parts[0];   
+        $controllerMethod = $parts[1] ?? 'index'; 
+
         $controller = App::container()->resolve($controllerClass);
         $callable = [$controller, $controllerMethod];
-        //SAMPLE OUTPUT:  Controller\NoteController  , index
 
         self::$routes[] = [
             'uri' => $uri,
@@ -17,6 +22,19 @@ class Router
             'method' => $method
         ];
     }
+    
+    // public static function add($method, $uri, string $controllerClass, string $controllerMethod)
+    // {
+    //     $controller = App::container()->resolve($controllerClass);
+    //     $callable = [$controller, $controllerMethod];
+    //     //SAMPLE OUTPUT:  Controller\NoteController  , index
+
+    //     self::$routes[] = [
+    //         'uri' => $uri,
+    //         'controller' => $callable,
+    //         'method' => $method
+    //     ];
+    // }
 
     // public static function add($method, $uri, $controller)
     // {
@@ -28,24 +46,31 @@ class Router
     // }
 
 
-    public static function get($uri, $controllerClass, $controllerMethod)
+
+    // public static function get($uri, $controller,$controllerMethod)
+    // {
+    //     self::add('GET', $uri, $controller, $controllerMethod);
+    // }
+
+
+    public static function get($uri, $controller)
     {
-        self::add('GET', $uri, $controllerClass, $controllerMethod);
+        self::add('GET', $uri, $controller);
     }
 
-    public static function post($uri, $controllerClass, $controllerMethod)
+    public static function post($uri, $controller)
     {
-        self::add('POST', $uri, $controllerClass, $controllerMethod);
+        self::add('POST', $uri, $controller);
     }
 
-    public static function patch($uri, $controllerClass, $controllerMethod)
+    public static function patch($uri, $controller)
     {
-        self::add('PATCH', $uri, $controllerClass, $controllerMethod);
+        self::add('PATCH', $uri, $controller);
     }
 
-    public static function delete($uri, $controllerClass, $controllerMethod)
+    public static function delete($uri, $controller)
     {
-        self::add('DELETE', $uri, $controllerClass, $controllerMethod);
+        self::add('DELETE', $uri, $controller);
     }
 
     public static function route($uri, $method)
