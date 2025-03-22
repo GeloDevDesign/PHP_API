@@ -9,7 +9,7 @@ class Router
     {
         $controller = App::container()->resolve($controllerClass);
         $callable = [$controller, $controllerMethod];
-        //OUTPUT:  Controller\NoteController  , index
+        //SAMPLE OUTPUT:  Controller\NoteController  , index
 
         self::$routes[] = [
             'uri' => $uri,

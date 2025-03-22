@@ -15,5 +15,4 @@ Router::delete('/api/', NoteController::class, 'destroy');
 // Router::patch('/api/', [$request, 'update']);
 // Router::delete('/api/', [$request, 'destroy']);
 
-
 // var_dump([NoteController::class, 'index']);

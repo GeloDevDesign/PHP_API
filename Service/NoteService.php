@@ -22,7 +22,7 @@ class NoteService
     )->get();
   }
 
-  public function store($body)
+  public function storeNotes($body)
   {
 
     if (empty($body)) {
@@ -38,11 +38,11 @@ class NoteService
       ['body' => $body, 'user_id' => $this->currentUserId]
     );
 
-    return $result;
+    return $result; 
   }
 
 
-  public function update($id, $body)
+  public function updateNotes($id, $body)
   {
 
     $note = $this->db->query(
@@ -78,7 +78,7 @@ class NoteService
     );
   }
 
-  public function destroy(int $id)
+  public function destroyNotes(int $id)
   {
     $note = $this->db->query(
       "SELECT * FROM notes WHERE id = :id",
