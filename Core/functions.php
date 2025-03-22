@@ -20,11 +20,12 @@ function abort($status = 404)
 
 
 
-function response($message, $status = 200)
+function response($message, $status = 200,$data = [])
 {
   http_response_code($status);
   echo json_encode([
-    'message' => $message
+    'message' => $message,
+    'data' => $data
   ]);
   die();
 }

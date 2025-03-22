@@ -16,4 +16,11 @@ $container->bind('Service\NoteService', function () use ($container) {
 });
 
 
+
+$container->bind('Controller\NoteController', function () use ($container) { // Fixed namespace
+  return new Controller\NoteController($container->resolve('Core\Database'));
+});
+
+
+
 App::setContainer($container);
