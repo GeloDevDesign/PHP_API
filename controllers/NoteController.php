@@ -24,7 +24,7 @@ class NoteController extends NoteService
       $this->notes = $this->getAll();
 
       if (empty($this->notes)) {
-        response("Fetch Success No Data Found.", 201);
+        response("No Data for this user.", 404);
       }
 
       response("Fetch Success No Data Found.", 200, $this->notes);
@@ -32,4 +32,6 @@ class NoteController extends NoteService
       echo $th;
     }
   }
+
+  
 }

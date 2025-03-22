@@ -15,9 +15,7 @@ $container->bind('Service\NoteService', function () use ($container) {
   return new Service\NoteService($container->resolve('Core\Database'));
 });
 
-
-
-$container->bind('Controller\NoteController', function () use ($container) { // Fixed namespace
+$container->bind('Controller\NoteController', function () use ($container) {
   return new Controller\NoteController($container->resolve('Core\Database'));
 });
 
