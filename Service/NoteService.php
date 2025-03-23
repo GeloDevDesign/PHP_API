@@ -14,12 +14,21 @@ class NoteService
     $this->currentUserId = $currentUserId ?? (int) ($_SESSION['user']['id'] ?? 1);
   }
 
-  public function getAll(): array
+  public function getAll($id)
   {
+    if(empty($id))
+    {
+      return $this->db->query(
+        "SELECT *  FROM notes WHERE user_id = :id",
+        ['id' => 1]
+      )->get();
+    } 
+
+
     return $this->db->query(
-      "SELECT id , body  FROM notes WHERE user_id = :id",
-      ['id' => $this->currentUserId]
-    )->get();
+      "SELECT id , body  FROM notes WHERE id = :id",
+      ['id' => $id]
+    )->find();
   }
 
   public function storeNotes($body)

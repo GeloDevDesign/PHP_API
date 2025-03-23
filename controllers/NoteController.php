@@ -5,7 +5,6 @@ namespace Controller;
 use Service\NoteService;
 use Core\Database;
 
-
 class NoteController extends NoteService
 {
   
@@ -21,8 +20,10 @@ class NoteController extends NoteService
   public function index()
   {
 
+    $id = getIDparams();
+
     try {
-      $this->notes = $this->getAll();
+      $this->notes = $this->getAll($id);
 
       if (empty($this->notes)) {
         response("No Data for this user.", 404);
@@ -33,7 +34,7 @@ class NoteController extends NoteService
       echo $th;
     }
   }
-  
+
   // REQUEST $request
   public function store()
   {
@@ -54,6 +55,9 @@ class NoteController extends NoteService
     }
   }
 
+
+
+  // require params $id;
 
   public function update()
 {
@@ -78,11 +82,12 @@ class NoteController extends NoteService
     }
 }
 
+
+  // require params $id;
   public function destroy()
   {
-
-    $id = $_GET['id'] ?? 1;
-
+    $id = getIDparams();
+    
     try {
       $result = $this->destroyNotes($id);
 

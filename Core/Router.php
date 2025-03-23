@@ -2,27 +2,30 @@
 
 namespace Core;
 
+
+
+
 class Router
 {
     protected static $routes = [];
 
     public static function add($method, $uri, string $controllerString)
     {
-       
+
         $parts = explode('@', $controllerString);
-        $controllerClass = "Controller\\" .$parts[0];
-        $controllerMethod = $parts[1] ?? 'index'; 
+        $controllerClass = "Controller\\" . $parts[0];
+        $controllerMethod = $parts[1] ?? 'index';
 
         $controller = App::container()->resolve($controllerClass);
         $callable = [$controller, $controllerMethod];
 
         self::$routes[] = [
-            'uri' => $uri,
+            'uri' => self::endpoint($uri),
             'controller' => $callable,
             'method' => $method
         ];
     }
-    
+
 
     public static function get($uri, $controller)
     {
@@ -42,6 +45,23 @@ class Router
     public static function delete($uri, $controller)
     {
         self::add('DELETE', $uri, $controller);
+    }
+
+    public  static function endpoint($route)
+    {
+        $start = strpos($route, "{");
+        
+        $end = strpos($route, "}");
+
+        if (!strpos($route, "{")) {
+            return $route;
+        }
+
+        // angelo
+
+        $length = $end - $start + 1;
+
+        return $endpoint =  substr_replace($route, getIDparams(), $start, $length);
     }
 
     public static function route($uri, $method)
