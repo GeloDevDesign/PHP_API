@@ -1,12 +1,14 @@
 <?php
 
-use Controller\NoteController;
 use Core\Router;
+
 
 Router::get('/api/', 'NoteController@index');
 Router::post('/api/', 'NoteController@store');
-Router::post('/api/', 'NoteController@update');
-Router::post('/api/', 'NoteController@destroy');
+
+//change ?id= 1 into note 
+Router::patch('/api/{note}', 'NoteController@update');
+Router::delete('/api/{note}', 'NoteController@destroy');
 
 // Router::get('/api/', NoteController::class, 'index');
 

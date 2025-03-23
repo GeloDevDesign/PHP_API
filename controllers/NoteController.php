@@ -8,6 +8,7 @@ use Core\Database;
 
 class NoteController extends NoteService
 {
+  
   protected $notes = [];
 
 

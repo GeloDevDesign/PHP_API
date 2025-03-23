@@ -10,7 +10,7 @@ class Router
     {
        
         $parts = explode('@', $controllerString);
-        $controllerClass = "Controller\\" .$parts[0];   
+        $controllerClass = "Controller\\" .$parts[0];
         $controllerMethod = $parts[1] ?? 'index'; 
 
         $controller = App::container()->resolve($controllerClass);
@@ -23,41 +23,6 @@ class Router
         ];
     }
     
-    // public static function add($method, $uri, string $controllerClass, string $controllerMethod)
-    // {
-    //     $controller = App::container()->resolve($controllerClass);
-    //     $callable = [$controller, $controllerMethod];
-    //     //SAMPLE OUTPUT:  Controller\NoteController  , index
-
-    //     self::$routes[] = [
-    //         'uri' => $uri,
-    //         'controller' => $callable,
-    //         'method' => $method
-    //     ];
-    // }
-
-    // public static function add($method, $uri, $controller)
-    // {
-    //     self::$routes[] = [
-    //         'uri' => $uri,
-    //         'controller' => $controller,
-    //         'method' => $method
-    //     ];
-    // }
-
-
-
-    // public static function get($uri, $controller,$controllerMethod)
-    // {
-    //     self::add('GET', $uri, $controller, $controllerMethod);
-    // }
-
-
-     // public static function get($uri, $controller)
-    // {
-    //     self::add('GET', $uri, $controller[0], $controllerMethod[1]);
-    // }
-
 
     public static function get($uri, $controller)
     {
