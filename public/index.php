@@ -19,7 +19,8 @@ require BASE_PATH . 'Core/functions.php';
 function getIDparams()
 {
   $url = parse_url($_SERVER['REQUEST_URI'])['path'];
-  $endPosition = strrpos($url, '/');
+  $last = strpos($url,'/');
+  $endPosition = strrpos($url, '/',$last);
   $id = substr($url, $endPosition + 1);
   return $id;
 }
