@@ -33,8 +33,8 @@ class NoteController extends NoteService
       echo $th;
     }
   }
-
-
+  
+  // REQUEST $request
   public function store()
   {
 
