@@ -20,7 +20,7 @@ class Router
         $callable = [$controller, $controllerMethod];
 
         self::$routes[] = [
-            'uri' => self::endpoint($uri),
+            'uri' => self::parseRoute($uri),
             'controller' => $callable,
             'method' => $method
         ];
@@ -47,22 +47,30 @@ class Router
         self::add('DELETE', $uri, $controller);
     }
 
-    public  static function endpoint($route)
+   public static function getRouteParam()
+    {
+        $url = parse_url($_SERVER['REQUEST_URI'])['path'];
+        $last = strpos($url, '/');
+        $endPosition = strrpos($url, '/', $last);
+        $id = substr($url, $endPosition + 1);
+        return $id;
+    }
+    public  static function parseRoute($route)
     {
         $start = strpos($route, "{");
-        
+
         $end = strpos($route, "}");
 
         if (!strpos($route, "{")) {
             return $route;
         }
 
-        // angelo
-
         $length = $end - $start + 1;
 
-        return $endpoint =  substr_replace($route, getIDparams(), $start, $length);
+        return $endpoint =  substr_replace($route, self::getRouteParam(), $start, $length);
     }
+
+
 
     public static function route($uri, $method)
     {

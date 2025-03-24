@@ -4,26 +4,32 @@ namespace Controller;
 
 use Service\NoteService;
 use Core\Database;
+use Core\Router;
 
 class NoteController extends NoteService
 {
-  
+
   protected $notes = [];
+  protected $idParams;
+  protected $payload;
+
 
 
   public function __construct(protected Database $db,  protected ?int $currentUserId = 1)
   {
 
     parent::__construct($this->db, $this->currentUserId);
+    $this->idParams = Router::getRouteParam();
+    
+    parse_str(file_get_contents('php://input'), $this->payload);
+
   }
 
   public function index()
   {
 
-    $id = getIDparams();
-
     try {
-      $this->notes = $this->getAll($id);
+      $this->notes = $this->getAll($this->idParams);
 
       if (empty($this->notes)) {
         response("No Data for this user.", 404);
@@ -39,17 +45,15 @@ class NoteController extends NoteService
   public function store()
   {
 
-    $body = $_POST['body'] ?? "";
-
     try {
 
-      $result = $this->storeNotes($body);
+      $result = $this->storeNotes($this->payload);
 
       if (is_array($result) && isset($result['error'])) {
         response($result['error']['message'], 400);
       }
 
-      response($body . " stored successfully", 200);
+      response($this->payload['body'] . " stored successfully", 200);
     } catch (\Throwable $th) {
       response("Unknown error during note storage.", 500);
     }
@@ -60,36 +64,31 @@ class NoteController extends NoteService
   // require params $id;
 
   public function update()
-{
-    $id = $_GET['id'] ?? 1;
-
-    $payload = file_get_contents('php://input');
-    parse_str($payload, $data);
-
-    $body = $data['body'] ?? '';
-
+  {
     
-    try {
-        $result = $this->updateNotes($id, $body);
+  
 
-        if (is_array($result) && isset($result['error'])) {
-            response($result['error']['message'], 404);
-        }
-        
-        response($body . " updated successfully", 200);
+    try {
+      $result = $this->updateNotes($this->idParams, $this->payload);
+
+      if (is_array($result) && isset($result['error'])) {
+        response($result['error']['message'], 404);
+      }
+
+      response($this->payload['body'] . " updated successfully", 200);
     } catch (\Throwable $th) {
-        response($th, 500);
+      response($th, 500);
     }
-}
+  }
 
 
   // require params $id;
   public function destroy()
   {
-    $id = getIDparams();
-    
+   
+
     try {
-      $result = $this->destroyNotes($id);
+      $result = $this->destroyNotes($this->idParams);
 
       if (is_array($result) && isset($result['error'])) {
         response($result['error']['message'], 400);

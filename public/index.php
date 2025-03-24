@@ -16,14 +16,7 @@ require BASE_PATH . "bootstrap.php";
 require BASE_PATH . "routes.php";
 require BASE_PATH . 'Core/functions.php';
 
-function getIDparams()
-{
-  $url = parse_url($_SERVER['REQUEST_URI'])['path'];
-  $last = strpos($url,'/');
-  $endPosition = strrpos($url, '/',$last);
-  $id = substr($url, $endPosition + 1);
-  return $id;
-}
+
 
 
 

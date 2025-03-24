@@ -31,10 +31,11 @@ class NoteService
     )->find();
   }
 
-  public function storeNotes($body)
+  public function storeNotes($payload)
   {
+    $data = $payload['body'];
 
-    if (empty($body)) {
+    if (empty($data)) {
       return [
         "error" => [
           "message" => "Body string must not be empty"
@@ -44,14 +45,14 @@ class NoteService
 
     $result = $this->db->query(
       "INSERT INTO notes (body, user_id) VALUES (:body, :user_id)",
-      ['body' => $body, 'user_id' => $this->currentUserId]
+      ['body' => $data, 'user_id' => $this->currentUserId]
     );
 
     return $result; 
   }
 
 
-  public function updateNotes($id, $body)
+  public function updateNotes($id, $payload)
   {
 
     $note = $this->db->query(
@@ -69,7 +70,7 @@ class NoteService
       ];
     }
 
-    if (empty($body)) {
+    if (empty($payload['body'])) {
       return [
         "error" => [
           "status" => 403,
@@ -82,7 +83,7 @@ class NoteService
       "UPDATE notes SET body = :body WHERE id = :id",
       [
         'id' => $id,
-        'body' => $body
+        'body' => $payload['body']
       ]
     );
   }
