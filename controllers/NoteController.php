@@ -10,26 +10,20 @@ class NoteController extends NoteService
 {
 
   protected $notes = [];
-  protected $idParams;
-  protected $payload;
-
 
 
   public function __construct(protected Database $db,  protected ?int $currentUserId = 1)
   {
 
     parent::__construct($this->db, $this->currentUserId);
-    $this->idParams = Router::getRouteParam();
-    
-    parse_str(file_get_contents('php://input'), $this->payload);
 
   }
 
-  public function index()
+  public function index($params)
   {
 
     try {
-      $this->notes = $this->getAll($this->idParams);
+      $this->notes = $this->getAll($params['id']);
 
       if (empty($this->notes)) {
         response("No Data for this user.", 404);
@@ -41,35 +35,36 @@ class NoteController extends NoteService
     }
   }
 
-  // REQUEST $request
-  public function store()
+  
+  public function store($params)
   {
+
+   
+    die();
 
     try {
 
-      $result = $this->storeNotes($this->payload);
+      $result = $this->storeNotes($params['body']);
+
+    ;
 
       if (is_array($result) && isset($result['error'])) {
         response($result['error']['message'], 400);
       }
 
-      response($this->payload['body'] . " stored successfully", 200);
+      response($params['body'] . " stored successfully", 200);
+
     } catch (\Throwable $th) {
       response("Unknown error during note storage.", 500);
     }
   }
 
 
-
-  // require params $id;
-
-  public function update()
+  public function update($params)
   {
-    
-  
 
     try {
-      $result = $this->updateNotes($this->idParams, $this->payload);
+      $result = $this->updateNotes($params['id'], $params['data']);
 
       if (is_array($result) && isset($result['error'])) {
         response($result['error']['message'], 404);
@@ -85,7 +80,6 @@ class NoteController extends NoteService
   // require params $id;
   public function destroy()
   {
-   
 
     try {
       $result = $this->destroyNotes($this->idParams);

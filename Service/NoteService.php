@@ -31,9 +31,9 @@ class NoteService
     )->find();
   }
 
-  public function storeNotes($payload)
+  public function storeNotes($data)
   {
-    $data = $payload['body'];
+    ;
 
     if (empty($data)) {
       return [

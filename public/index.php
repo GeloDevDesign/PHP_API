@@ -16,10 +16,6 @@ require BASE_PATH . "bootstrap.php";
 require BASE_PATH . "routes.php";
 require BASE_PATH . 'Core/functions.php';
 
-
-
-
-
 try {
 
     Core\Router::route($uri, $method);
