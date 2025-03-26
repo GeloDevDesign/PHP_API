@@ -70,7 +70,7 @@ class NoteService
       ];
     }
 
-    if (empty($payload['body'])) {
+    if (empty($payload)) {
       return [
         "error" => [
           "status" => 403,
@@ -83,7 +83,7 @@ class NoteService
       "UPDATE notes SET body = :body WHERE id = :id",
       [
         'id' => $id,
-        'body' => $payload['body']
+        'body' => $payload
       ]
     );
   }

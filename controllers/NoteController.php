@@ -38,9 +38,7 @@ class NoteController extends NoteService
   
   public function store($params)
   {
-
-   
-    die();
+  
 
     try {
 
@@ -62,15 +60,14 @@ class NoteController extends NoteService
 
   public function update($params)
   {
-
     try {
-      $result = $this->updateNotes($params['id'], $params['data']);
+      $result = $this->updateNotes($params['id'], $params['body']);
 
       if (is_array($result) && isset($result['error'])) {
         response($result['error']['message'], 404);
       }
 
-      response($this->payload['body'] . " updated successfully", 200);
+      response($params['body'] . " updated successfully", 200);
     } catch (\Throwable $th) {
       response($th, 500);
     }
@@ -78,11 +75,11 @@ class NoteController extends NoteService
 
 
   // require params $id;
-  public function destroy()
+  public function destroy($params)
   {
 
     try {
-      $result = $this->destroyNotes($this->idParams);
+      $result = $this->destroyNotes($params['id']);
 
       if (is_array($result) && isset($result['error'])) {
         response($result['error']['message'], 400);

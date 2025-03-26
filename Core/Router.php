@@ -8,30 +8,29 @@ namespace Core;
 class Router
 {
     protected static $routes = [];
-    protected static $payload ;
+    protected static $payload;
 
     public static function add($method, $uri, string $controllerString)
     {
         $parts = explode('@', $controllerString);
         $controllerClass = "Controller\\" . $parts[0];
         $controllerMethod = $parts[1] ?? 'index';
-    
+
         $controller = App::container()->resolve($controllerClass);
         $callable = [$controller, $controllerMethod];
-    
+
         $payload = [];
         parse_str(file_get_contents('php://input'), $payload);
-    
+
         $params = ['id' => self::getRouteParam()];
-    
-       
+
+
         if (!empty($payload)) {
-            
-            $key = key($payload);
-            $value = $payload[$key];
-            $params[$key] = $value;
+            foreach ($payload as $key => $value) {
+                $params[$key] = $value;
+            }
         }
-    
+
         self::$routes[] = [
             'uri' => self::parseRoute($uri),
             'controller' => $callable,
@@ -61,7 +60,7 @@ class Router
         self::add('DELETE', $uri, $controller);
     }
 
-   public static function getRouteParam()
+    public static function getRouteParam()
     {
         $url = parse_url($_SERVER['REQUEST_URI'])['path'];
         $last = strpos($url, '/');
@@ -91,7 +90,7 @@ class Router
         foreach (self::$routes as $route) {
             if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
                 if (is_callable($route['controller'])) {
-                    return call_user_func($route['controller'],$route['params']);
+                    return call_user_func($route['controller'], $route['params']);
                 }
                 echo "Invalid controller";
                 return;
